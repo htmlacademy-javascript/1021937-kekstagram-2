@@ -25,8 +25,6 @@ const createRandomDataFromRangeGenerator = (min, max) => {
   };
 };
 
-const getRandomValue = (min, max) => getRandomInteger(min, max);
-
 const getRandomComments = () => {
   const comments = [
     'Всё отлично!',
@@ -49,34 +47,14 @@ const getRandomComments = () => {
 
 const getRandomName = () => {
   const names = [
-    'Алексей',
-    'Мария',
-    'Дмитрий',
-    'Елена',
-    'Иван',
-    'Ольга',
-    'Сергей',
-    'Татьяна',
-    'Николай',
-    'Анна',
-    'Виктор',
-    'Светлана',
-    'Павел',
-    'Ирина',
-    'Михаил',
-    'Юлия',
-    'Андрей',
-    'Наталья',
-    'Владимир',
-    'Ксения',
-    'Егор',
-    'Людмила',
-    'Роман',
-    'Вероника',
-    'Константин'
+    'Алексей', 'Мария', 'Дмитрий', 'Елена', 'Иван',
+    'Ольга', 'Сергей', 'Татьяна', 'Николай', 'Анна',
+    'Виктор', 'Светлана', 'Павел', 'Ирина', 'Михаил',
+    'Юлия', 'Андрей', 'Наталья', 'Владимир', 'Ксения',
+    'Егор', 'Людмила', 'Роман', 'Вероника', 'Константин'
   ];
 
-  return names[Math.floor(Math.random() * names.length)];
+  return names[getRandomInteger(0, names.length - 1)];
 };
 
 const getPhotoObjects = (items = 25) => {
@@ -92,10 +70,10 @@ const getPhotoObjects = (items = 25) => {
       id: generatePhotoId(),
       url: `photos/${generatePhotoUrl()}.jpg`,
       description: `Фото от + ${name}`,
-      likes: getRandomValue(15, 200),
+      likes: getRandomInteger(15, 200),
       comments: {
         id: generateCommentId(),
-        avatar: `img/avatar-${getRandomValue(1, 6)}.svg`,
+        avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
         message: getRandomComments()
       },
       name: name
@@ -105,4 +83,4 @@ const getPhotoObjects = (items = 25) => {
   return photos;
 };
 
-console.log(getPhotoObjects());
+getPhotoObjects();
