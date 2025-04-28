@@ -47,6 +47,37 @@ const getRandomComments = () => {
   return `${comments[firstIndex]} ${comments[secondIndex]}`;
 };
 
+const getRandomName = () => {
+  const names = [
+    'Алексей',
+    'Мария',
+    'Дмитрий',
+    'Елена',
+    'Иван',
+    'Ольга',
+    'Сергей',
+    'Татьяна',
+    'Николай',
+    'Анна',
+    'Виктор',
+    'Светлана',
+    'Павел',
+    'Ирина',
+    'Михаил',
+    'Юлия',
+    'Андрей',
+    'Наталья',
+    'Владимир',
+    'Ксения',
+    'Егор',
+    'Людмила',
+    'Роман',
+    'Вероника',
+    'Константин'
+  ];
+
+  return names[Math.floor(Math.random() * names.length)];
+};
 
 const getPhotoObjects = (items = 25) => {
   const photos = [];
@@ -55,20 +86,23 @@ const getPhotoObjects = (items = 25) => {
   const generateCommentId = createRandomDataFromRangeGenerator(1, 25);
 
   for (let i = 0; i < items; i++) {
+    const name = getRandomName();
+
     photos.push({
       id: generatePhotoId(),
       url: `photos/${generatePhotoUrl()}.jpg`,
-      description: `Photo - ${generatePhotoUrl()}`,
+      description: `Фото от + ${name}`,
       likes: getRandomValue(15, 200),
       comments: {
         id: generateCommentId(),
         avatar: `img/avatar-${getRandomValue(1, 6)}.svg`,
         message: getRandomComments()
-      }
+      },
+      name: name
     });
   }
 
   return photos;
 };
 
-getPhotoObjects();
+console.log(getPhotoObjects());
