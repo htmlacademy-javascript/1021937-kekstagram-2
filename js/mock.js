@@ -71,11 +71,11 @@ export const getPhotoObjects = (items = 25) => {
       url: `photos/${generatePhotoUrl()}.jpg`,
       description: `Фото от + ${name}`,
       likes: getRandomInteger(15, 200),
-      comments: {
+      comments: Array.from({length: getRandomInteger(0, 25)}, () => ({
         id: generateCommentId(),
         avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
         message: getRandomComments()
-      },
+      })),
       name: name
     });
   }
