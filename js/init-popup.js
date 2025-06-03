@@ -4,27 +4,35 @@ import { isKeyDown } from './util';
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
-const closePopupPictureButton = bigPicture.querySelector('.big-picture__cancel');
+const closePopupButton = bigPicture.querySelector('.big-picture__cancel');
 
 export const closePopup = () => {
   bigPicture.classList.add('hidden');
 };
 
-const closePopupPictureByPressCloseButton = () => {
+const closePopupByPressCloseButton = () => {
   closePopup();
 
-  closePopupPictureButton.removeEventListener('click', closePopupPictureByPressCloseButton);
+  closePopupButton.removeEventListener('click', closePopupByPressCloseButton);
 };
 
-const closePopupPictureByKey = (event) => {
+const closePopupByKey = (event) => {
   if (event && isKeyDown(event, 'Escape')) {
     closePopup();
 
-    document.removeEventListener('keydown', closePopupPictureByKey);
+    document.removeEventListener('keydown', closePopupByKey);
   }
 };
 
-const renderPopup = (id) => {
+const closePopupByClickOutside = (event) => {
+  if (event.target === bigPicture) {
+    closePopup();
+
+    bigPicture.removeEventListener('click', closePopupByClickOutside);
+  }
+};
+
+const initPopup = (id) => {
   const currentPicture = photoObjects.find((item) => item.id === id);
 
   if (!currentPicture) {
@@ -37,11 +45,12 @@ const renderPopup = (id) => {
 
   bigPicture.classList.remove('hidden');
 
-  document.addEventListener('keydown', closePopupPictureByKey);
-  closePopupPictureButton.addEventListener('click', closePopupPictureByPressCloseButton);
+  document.addEventListener('keydown', closePopupByKey);
+  closePopupButton.addEventListener('click', closePopupByPressCloseButton);
+  bigPicture.addEventListener('click', closePopupByClickOutside);
 };
 
-export const openPopupPicture = () => {
+export const openPopup = () => {
   const pictures = document.querySelector('.pictures');
 
   pictures.addEventListener('click', (event) => {
@@ -52,6 +61,6 @@ export const openPopupPicture = () => {
     }
 
     const id = Number(element.dataset.id);
-    renderPopup(id);
+    initPopup(id);
   });
 };
