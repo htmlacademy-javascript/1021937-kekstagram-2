@@ -25,29 +25,31 @@ export const closePopup = () => {
   if (body.classList.contains(POPUP_SERVICE_CLASSES.BODY_INIT_POPUP)) {
     body.classList.remove(POPUP_SERVICE_CLASSES.BODY_INIT_POPUP);
   }
+
+  removePopupListenersGarbage();
 };
 
 const closePopupByPressCloseButton = () => {
   closePopup();
-
-  closePopupButton.removeEventListener('click', closePopupByPressCloseButton);
 };
 
 const closePopupByKey = (event) => {
   if (event && isKeyDown(event, 'Escape')) {
     closePopup();
-
-    document.removeEventListener('keydown', closePopupByKey);
   }
 };
 
 const closePopupByClickOutside = (event) => {
   if (event.target === bigPicture) {
     closePopup();
-
-    bigPicture.removeEventListener('click', closePopupByClickOutside);
   }
 };
+
+function removePopupListenersGarbage() {
+  closePopupButton.removeEventListener('click', closePopupByPressCloseButton);
+  document.removeEventListener('keydown', closePopupByKey);
+  bigPicture.removeEventListener('click', closePopupByClickOutside);
+}
 
 const initOpenPopupListeners = () => {
   document.addEventListener('keydown', closePopupByKey);
@@ -78,7 +80,7 @@ const getPhotoComments = (data) => {
   commentsCaption.textContent = data.description;
 };
 
-const initPopup = (id) => {
+const getPopupData = (id) => {
   const currentPicture = photoObjects.find((element) => element.id === id);
 
   if (!currentPicture) {
@@ -105,8 +107,12 @@ const initPopup = (id) => {
   }
 };
 
-export const openPopup = () => {
+export const initPopup = () => {
   const pictures = document.querySelector('.pictures');
+
+  if (!pictures) {
+    return;
+  }
 
   pictures.addEventListener('click', (event) => {
     const element = event.target.closest('.picture');
@@ -116,6 +122,6 @@ export const openPopup = () => {
     }
 
     const id = Number(element.dataset.id);
-    initPopup(id);
+    getPopupData(id);
   });
 };
