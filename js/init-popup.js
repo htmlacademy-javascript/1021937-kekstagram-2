@@ -53,21 +53,15 @@ const initOpenPopupListeners = () => {
   bigPicture.addEventListener('click', closePopupByClickOutside);
 };
 
-const initPopup = (id) => {
-  const currentPicture = photoObjects.find((element) => element.id === id);
-
-  if (!currentPicture) {
-    return;
-  }
-
+const getPhotoComments = (data) => {
   const commentsFragment = document.createDocumentFragment();
 
-  bigPictureImage.src = currentPicture.url;
-  bigPictureImage.alt = currentPicture.description;
-  likesCount.textContent = currentPicture.likes;
+  bigPictureImage.src = data.url;
+  bigPictureImage.alt = data.description;
+  likesCount.textContent = data.likes;
   commentsList.innerHTML = '';
 
-  currentPicture.comments.forEach((element) => {
+  data.comments.forEach((element) => {
     const clonedCommentTemplate = commentsListElement.cloneNode(true);
 
     clonedCommentTemplate.querySelector('.social__picture').src = element.avatar;
@@ -79,7 +73,17 @@ const initPopup = (id) => {
 
   commentsList.append(commentsFragment);
 
-  commentsCaption.textContent = currentPicture.description;
+  commentsCaption.textContent = data.description;
+};
+
+const initPopup = (id) => {
+  const currentPicture = photoObjects.find((element) => element.id === id);
+
+  if (!currentPicture) {
+    return;
+  }
+
+  getPhotoComments(currentPicture);
 
   bigPicture.classList.remove(POPUP_SERVICE_CLASSES.HIDDEN);
   body.classList.add(POPUP_SERVICE_CLASSES.BODY_INIT_POPUP);
