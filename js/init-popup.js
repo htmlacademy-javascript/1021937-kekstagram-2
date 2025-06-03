@@ -8,9 +8,21 @@ const closePopupButton = bigPicture.querySelector('.big-picture__cancel');
 const commentsCaption = bigPicture.querySelector('.social__caption');
 const commentsList = bigPicture.querySelector('.social__comments');
 const commentsListElement = bigPicture.querySelector('.social__comment');
+const body = document.body;
+
+const POPUP_SERVICE_CLASSES = {
+  'HIDDEN': 'hidden',
+  'BODY_INIT_POPUP': 'modal-open'
+};
 
 export const closePopup = () => {
-  bigPicture.classList.add('hidden');
+  if (!bigPicture.classList.contains(POPUP_SERVICE_CLASSES.HIDDEN)) {
+    bigPicture.classList.add(POPUP_SERVICE_CLASSES.HIDDEN);
+  }
+
+  if (body.classList.contains(POPUP_SERVICE_CLASSES.BODY_INIT_POPUP)) {
+    body.classList.remove(POPUP_SERVICE_CLASSES.BODY_INIT_POPUP);
+  }
 };
 
 const closePopupByPressCloseButton = () => {
@@ -68,7 +80,9 @@ const initPopup = (id) => {
   commentsList.append(commentsFragment);
 
   commentsCaption.textContent = currentPicture.description;
-  bigPicture.classList.remove('hidden');
+
+  bigPicture.classList.remove(POPUP_SERVICE_CLASSES.HIDDEN);
+  body.classList.add(POPUP_SERVICE_CLASSES.BODY_INIT_POPUP);
 
   initOpenPopupListeners();
 };
