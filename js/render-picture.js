@@ -10,6 +10,7 @@ export const renderPicture = (data) => {
     clonedTemplate.querySelector('.picture__img').alt = element.description;
     clonedTemplate.querySelector('.picture__likes').textContent = element.likes;
     clonedTemplate.querySelector('.picture__comments').textContent = element.comments.length;
+    clonedTemplate.dataset.id = element.id;
 
     fragment.append(clonedTemplate);
   });

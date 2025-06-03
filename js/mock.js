@@ -82,3 +82,5 @@ export const getPhotoObjects = (items = 25) => {
 
   return photos;
 };
+
+export const photoObjects = getPhotoObjects();
