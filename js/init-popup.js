@@ -1,4 +1,4 @@
-import { POPUP_SERVICE_CLASSES, isKeyDown } from './util';
+import { POPUP_SERVICE_CLASSES, isEscKeyDown } from './util';
 
 const body = document.body;
 const bigPicture = document.querySelector('.big-picture');
@@ -25,7 +25,7 @@ const onClosePopupByPressCloseButton = () => {
 };
 
 const onClosePopupByKey = (event) => {
-  if (isKeyDown(event)) {
+  if (isEscKeyDown(event)) {
     closePopup();
   }
 };

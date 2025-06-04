@@ -5,4 +5,4 @@ export const POPUP_SERVICE_CLASSES = {
 
 export const isValidStringLength = (string, maxLength) => string.length <= maxLength;
 
-export const isKeyDown = (event) => event.key === 'Escape';
+export const isEscKeyDown = (event) => event.key === 'Escape';
