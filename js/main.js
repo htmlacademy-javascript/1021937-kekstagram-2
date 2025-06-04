@@ -3,4 +3,4 @@ import {photoObjects} from './mock.js';
 import {initPopup} from './init-popup';
 
 renderPicture(photoObjects);
-initPopup();
+initPopup(photoObjects);

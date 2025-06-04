@@ -1,5 +1,4 @@
-import { photoObjects } from './mock.js';
-import { isKeyDown } from './util';
+import { POPUP_SERVICE_CLASSES, isKeyDown } from './util';
 
 const body = document.body;
 const bigPicture = document.querySelector('.big-picture');
@@ -12,49 +11,41 @@ const commentsListElement = bigPicture.querySelector('.social__comment');
 const commentsCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoaderButton = bigPicture.querySelector('.social__comments-loader');
 
-const POPUP_SERVICE_CLASSES = {
-  'HIDDEN': 'hidden',
-  'BODY_INIT_POPUP': 'modal-open'
-};
+const {HIDDEN, BODY_INIT_POPUP} = POPUP_SERVICE_CLASSES;
 
 export const closePopup = () => {
-  if (!bigPicture.classList.contains(POPUP_SERVICE_CLASSES.HIDDEN)) {
-    bigPicture.classList.add(POPUP_SERVICE_CLASSES.HIDDEN);
-  }
-
-  if (body.classList.contains(POPUP_SERVICE_CLASSES.BODY_INIT_POPUP)) {
-    body.classList.remove(POPUP_SERVICE_CLASSES.BODY_INIT_POPUP);
-  }
+  bigPicture.classList.add(HIDDEN);
+  body.classList.remove(BODY_INIT_POPUP);
 
   removePopupListenersGarbage();
 };
 
-const closePopupByPressCloseButton = () => {
+const onClosePopupByPressCloseButton = () => {
   closePopup();
 };
 
-const closePopupByKey = (event) => {
-  if (event && isKeyDown(event, 'Escape')) {
+const onClosePopupByKey = (event) => {
+  if (isKeyDown(event)) {
     closePopup();
   }
 };
 
-const closePopupByClickOutside = (event) => {
+const onClosePopupByClickOutside = (event) => {
   if (event.target === bigPicture) {
     closePopup();
   }
 };
 
 function removePopupListenersGarbage() {
-  closePopupButton.removeEventListener('click', closePopupByPressCloseButton);
-  document.removeEventListener('keydown', closePopupByKey);
-  bigPicture.removeEventListener('click', closePopupByClickOutside);
+  closePopupButton.removeEventListener('click', onClosePopupByPressCloseButton);
+  document.removeEventListener('keydown', onClosePopupByKey);
+  bigPicture.removeEventListener('click', onClosePopupByClickOutside);
 }
 
 const initOpenPopupListeners = () => {
-  document.addEventListener('keydown', closePopupByKey);
-  closePopupButton.addEventListener('click', closePopupByPressCloseButton);
-  bigPicture.addEventListener('click', closePopupByClickOutside);
+  document.addEventListener('keydown', onClosePopupByKey);
+  closePopupButton.addEventListener('click', onClosePopupByPressCloseButton);
+  bigPicture.addEventListener('click', onClosePopupByClickOutside);
 };
 
 const getPhotoComments = (data) => {
@@ -80,8 +71,8 @@ const getPhotoComments = (data) => {
   commentsCaption.textContent = data.description;
 };
 
-const getPopupData = (id) => {
-  const currentPicture = photoObjects.find((element) => element.id === id);
+const getPopupData = (id, data) => {
+  const currentPicture = data.find((element) => element.id === id);
 
   if (!currentPicture) {
     return;
@@ -90,38 +81,19 @@ const getPopupData = (id) => {
   getPhotoComments(currentPicture);
   initOpenPopupListeners();
 
-  if (!commentsCount.classList.contains(POPUP_SERVICE_CLASSES.HIDDEN)) {
-    commentsCount.classList.add(POPUP_SERVICE_CLASSES.HIDDEN);
-  }
-
-  if (!commentsLoaderButton.classList.contains(POPUP_SERVICE_CLASSES.HIDDEN)) {
-    commentsLoaderButton.classList.add(POPUP_SERVICE_CLASSES.HIDDEN);
-  }
-
-  if (!body.classList.contains(POPUP_SERVICE_CLASSES.BODY_INIT_POPUP)) {
-    body.classList.add(POPUP_SERVICE_CLASSES.BODY_INIT_POPUP);
-  }
-
-  if (bigPicture.classList.contains(POPUP_SERVICE_CLASSES.HIDDEN)) {
-    bigPicture.classList.remove(POPUP_SERVICE_CLASSES.HIDDEN);
-  }
+  commentsCount.classList.add(HIDDEN);
+  commentsLoaderButton.classList.add(HIDDEN);
+  body.classList.add(BODY_INIT_POPUP);
+  bigPicture.classList.remove(HIDDEN);
 };
 
-export const initPopup = () => {
+export const initPopup = (data) => {
   const pictures = document.querySelector('.pictures');
-
-  if (!pictures) {
-    return;
-  }
 
   pictures.addEventListener('click', (event) => {
     const element = event.target.closest('.picture');
 
-    if (!element) {
-      return;
-    }
-
     const id = Number(element.dataset.id);
-    getPopupData(id);
+    getPopupData(id, data);
   });
 };
