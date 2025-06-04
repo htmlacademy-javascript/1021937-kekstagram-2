@@ -69,12 +69,13 @@ export const getPhotoObjects = (items = 25) => {
     photos.push({
       id: generatePhotoId(),
       url: `photos/${generatePhotoUrl()}.jpg`,
-      description: `Фото от + ${name}`,
+      description: `Фото от ${name}`,
       likes: getRandomInteger(15, 200),
       comments: Array.from({length: getRandomInteger(0, 25)}, () => ({
         id: generateCommentId(),
         avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-        message: getRandomComments()
+        message: getRandomComments(),
+        name: `Комментирует ${name}`
       })),
       name: name
     });
@@ -82,3 +83,5 @@ export const getPhotoObjects = (items = 25) => {
 
   return photos;
 };
+
+export const photoObjects = getPhotoObjects();
