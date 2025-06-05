@@ -5,13 +5,22 @@ const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
 const closePopupButton = bigPicture.querySelector('.big-picture__cancel');
+
 const commentsCaption = bigPicture.querySelector('.social__caption');
 const commentsList = bigPicture.querySelector('.social__comments');
 const commentsListElement = bigPicture.querySelector('.social__comment');
 const commentsCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoaderButton = bigPicture.querySelector('.social__comments-loader');
 
+let currentComments = [];
+let shownCommentsCount = 0;
+
+const commentsShownCountElement = commentsCount.querySelector('.social__comment-shown-count');
+const commentsTotalCountElement = commentsCount.querySelector('.social__comment-total-count');
+
 const {HIDDEN, BODY_INIT_POPUP} = POPUP_SERVICE_CLASSES;
+
+const COMMENT_RENDER_COUNT = 5;
 
 export const closePopup = () => {
   bigPicture.classList.add(HIDDEN);
@@ -36,27 +45,17 @@ const onClosePopupByClickOutside = (event) => {
   }
 };
 
-function removePopupListenersGarbage() {
-  closePopupButton.removeEventListener('click', onClosePopupByPressCloseButton);
-  document.removeEventListener('keydown', onClosePopupByKey);
-  bigPicture.removeEventListener('click', onClosePopupByClickOutside);
-}
-
 const initOpenPopupListeners = () => {
   document.addEventListener('keydown', onClosePopupByKey);
   closePopupButton.addEventListener('click', onClosePopupByPressCloseButton);
   bigPicture.addEventListener('click', onClosePopupByClickOutside);
 };
 
-const getPhotoComments = (data) => {
+const renderComments = () => {
+  const nextComments = currentComments.slice(shownCommentsCount, shownCommentsCount + COMMENT_RENDER_COUNT);
   const commentsFragment = document.createDocumentFragment();
 
-  bigPictureImage.src = data.url;
-  bigPictureImage.alt = data.description;
-  likesCount.textContent = data.likes;
-  commentsList.innerHTML = '';
-
-  data.comments.forEach((element) => {
+  nextComments.forEach((element) => {
     const clonedCommentTemplate = commentsListElement.cloneNode(true);
 
     clonedCommentTemplate.querySelector('.social__picture').src = element.avatar;
@@ -68,21 +67,48 @@ const getPhotoComments = (data) => {
 
   commentsList.append(commentsFragment);
 
+  shownCommentsCount += nextComments.length;
+
+  commentsShownCountElement.textContent = shownCommentsCount;
+  commentsTotalCountElement.textContent = currentComments.length.toString();
+
+  if (shownCommentsCount >= currentComments.length) {
+    commentsLoaderButton.classList.add('hidden');
+  } else {
+    commentsLoaderButton.classList.remove('hidden');
+  }
+};
+
+const resetComments = () => {
+  commentsList.innerHTML = '';
+  shownCommentsCount = 0;
+};
+
+const onCommentsLoaderClick = () => {
+  renderComments();
+};
+
+const getPhotoComments = (data) => {
+  currentComments = data.comments;
+  resetComments();
+
+  bigPictureImage.src = data.url;
+  bigPictureImage.alt = data.description;
+  likesCount.textContent = data.likes;
+
   commentsCaption.textContent = data.description;
+
+  renderComments();
+
+  commentsLoaderButton.addEventListener('click', onCommentsLoaderClick);
 };
 
 const getPopupData = (id, data) => {
   const currentPicture = data.find((element) => element.id === id);
 
-  if (!currentPicture) {
-    return;
-  }
-
   getPhotoComments(currentPicture);
   initOpenPopupListeners();
 
-  commentsCount.classList.add(HIDDEN);
-  commentsLoaderButton.classList.add(HIDDEN);
   body.classList.add(BODY_INIT_POPUP);
   bigPicture.classList.remove(HIDDEN);
 };
@@ -92,8 +118,15 @@ export const initPopup = (data) => {
 
   pictures.addEventListener('click', (event) => {
     const element = event.target.closest('.picture');
-
     const id = Number(element.dataset.id);
+
     getPopupData(id, data);
   });
 };
+
+function removePopupListenersGarbage() {
+  closePopupButton.removeEventListener('click', onClosePopupByPressCloseButton);
+  document.removeEventListener('keydown', onClosePopupByKey);
+  bigPicture.removeEventListener('click', onClosePopupByClickOutside);
+  commentsLoaderButton.removeEventListener('click', onCommentsLoaderClick);
+}
