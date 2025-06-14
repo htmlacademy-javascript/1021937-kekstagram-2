@@ -1,4 +1,6 @@
 import {renderPicture} from './render-picture.js';
-import {getPhotoObjects} from './mock.js';
+import {photoObjects} from './mock.js';
+import {initPopup} from './init-popup';
 
-renderPicture(getPhotoObjects());
+renderPicture(photoObjects);
+initPopup(photoObjects);
