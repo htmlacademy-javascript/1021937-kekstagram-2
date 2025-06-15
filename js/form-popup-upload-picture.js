@@ -2,7 +2,9 @@ import { isEscKeyDown, POPUP_SERVICE_CLASSES } from './util';
 import { getCommentErrorMessage, getHashtagErrorMessage, validateCommentLength, validateHashtags } from './validation';
 
 const body = document.body;
-const uploadPictureForm = document.querySelector('.img-upload__form');
+
+export const uploadPictureForm = document.querySelector('.img-upload__form');
+export const previewPicture = uploadPictureForm.querySelector('.img-upload__preview img');
 const uploadFileInput = uploadPictureForm.querySelector('.img-upload__input');
 const pictureEditorOverlay = uploadPictureForm.querySelector('.img-upload__overlay');
 const pictureEditorCancelButton = pictureEditorOverlay.querySelector('.img-upload__cancel');
@@ -63,6 +65,12 @@ const pristine = new Pristine(uploadPictureForm, {
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'div',
   errorTextClass: 'data-error'
+});
+
+uploadPictureForm.addEventListener('submit', (event) => {
+  if (!pristine.validate()) {
+    event.preventDefault();
+  }
 });
 
 pristine.addValidator(hashTagInput, validateHashtags, getHashtagErrorMessage);

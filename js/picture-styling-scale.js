@@ -1,3 +1,5 @@
+import { previewPicture } from './form-popup-upload-picture';
+
 const SCALE_SETTINGS = {
   STEP: 25,
   MIN: 25,
@@ -11,7 +13,6 @@ export const initImageScale = () => {
   const scaleSmallerButton = pictureEditorOverlay.querySelector('.scale__control--smaller');
   const scaleBiggerButton = pictureEditorOverlay.querySelector('.scale__control--bigger');
   const scaleValueInput = pictureEditorOverlay.querySelector('.scale__control--value');
-  const previewImage = pictureEditorOverlay.querySelector('.img-upload__preview img');
 
   function setScale(value) {
     if (value < SCALE_SETTINGS.MIN) {
@@ -23,7 +24,7 @@ export const initImageScale = () => {
     }
 
     scaleValueInput.value = `${value}%`;
-    previewImage.style.transform = `scale(${value / 100})`;
+    previewPicture.style.transform = `scale(${value / 100})`;
   }
 
   scaleSmallerButton.addEventListener('click', () => {

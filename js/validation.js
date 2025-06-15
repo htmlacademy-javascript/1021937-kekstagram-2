@@ -1,4 +1,4 @@
-import { isValidStringLength } from './util';
+import { isValidStringLength } from './util.js';
 
 const MAX_HASHTAGS = 5;
 const MAX_HASHTAG_LENGTH = 20;
@@ -11,10 +11,10 @@ export const ERROR_MESSAGES = {
     ONLY_HASH: 'Хэштег не может состоять только из одной решётки',
     TOO_LONG: `Максимальная длина хэштега — ${MAX_HASHTAG_LENGTH} символов`,
     INVALID_CHARACTERS: 'Хэштег может содержать только буквы и цифры, без пробелов и спецсимволов',
-    NOT_UNIQUE: 'Один и тот же хэштег не может использоваться дважды',
+    NOT_UNIQUE: 'Один и тот же хэштег не может использоваться дважды'
   },
   COMMENT: {
-    TOO_LONG: `Длина комментария не может превышать ${MAX_COMMENT_LENGTH} символов`,
+    TOO_LONG: `Длина комментария не может превышать ${MAX_COMMENT_LENGTH} символов`
   }
 };
 
@@ -39,14 +39,13 @@ export const isValidHashtagFormat = (tag) => {
     return false;
   }
 
-  const hashRagRule = /^#[a-zа-яё0-9]+$/i;
+  const hashTagRule = /^#[a-zа-яё0-9]+$/i;
 
-  return hashRagRule.test(tag);
+  return hashTagRule.test(tag);
 };
 
 export const hasUniqueHashtags = (tags) => {
   const uniqueTags = new Set(tags);
-
   return uniqueTags.size === tags.length;
 };
 
@@ -114,4 +113,10 @@ export const validateCommentLength = (value) => {
   return isValidStringLength(value, MAX_COMMENT_LENGTH);
 };
 
-export const getCommentErrorMessage = () => ERROR_MESSAGES.COMMENT.TOO_LONG;
+export const getCommentErrorMessage = (value) => {
+  if (!validateCommentLength(value)) {
+    return ERROR_MESSAGES.COMMENT.TOO_LONG;
+  }
+
+  return '';
+};
