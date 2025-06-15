@@ -30,6 +30,7 @@ const onDocumentKeyDown = (event) => {
 
     if (document.activeElement === hashTagInput || document.activeElement === commentInput) {
       event.stopPropagation();
+
       return;
     }
 
