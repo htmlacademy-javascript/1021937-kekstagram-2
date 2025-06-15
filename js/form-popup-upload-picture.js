@@ -1,5 +1,5 @@
-import {isEscKeyDown, POPUP_SERVICE_CLASSES} from './util';
-import {validateHashtags, getHashtagErrorMessage, validateCommentLength, getCommentErrorMessage} from './validation';
+import { isEscKeyDown, POPUP_SERVICE_CLASSES } from './util';
+import { getCommentErrorMessage, getHashtagErrorMessage, validateCommentLength, validateHashtags } from './validation';
 
 const body = document.body;
 const uploadPictureForm = document.querySelector('.img-upload__form');

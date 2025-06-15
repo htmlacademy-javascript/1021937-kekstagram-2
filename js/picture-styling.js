@@ -39,4 +39,4 @@ export const initImageScale = () => {
   uploadFileInput.addEventListener('change', () => {
     setScale(100);
   });
-}
+};

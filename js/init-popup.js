@@ -1,4 +1,4 @@
-import { POPUP_SERVICE_CLASSES, isEscKeyDown } from './util';
+import { isEscKeyDown, POPUP_SERVICE_CLASSES } from './util';
 
 const body = document.body;
 const bigPicture = document.querySelector('.big-picture');
