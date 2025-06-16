@@ -1,5 +1,9 @@
 import { isEscKeyDown, POPUP_SERVICE_CLASSES } from './util';
 
+let currentComments = [];
+let shownCommentsCount = 0;
+const {HIDDEN, BODY_INIT_POPUP} = POPUP_SERVICE_CLASSES;
+
 const body = document.body;
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
@@ -12,13 +16,8 @@ const commentsListElement = bigPicture.querySelector('.social__comment');
 const commentsCount = bigPicture.querySelector('.social__comment-count');
 const commentsLoaderButton = bigPicture.querySelector('.social__comments-loader');
 
-let currentComments = [];
-let shownCommentsCount = 0;
-
 const commentsShownCountElement = commentsCount.querySelector('.social__comment-shown-count');
 const commentsTotalCountElement = commentsCount.querySelector('.social__comment-total-count');
-
-const {HIDDEN, BODY_INIT_POPUP} = POPUP_SERVICE_CLASSES;
 
 const COMMENT_RENDER_COUNT = 5;
 
@@ -118,6 +117,11 @@ export const initPopup = (data) => {
 
   pictures.addEventListener('click', (event) => {
     const element = event.target.closest('.picture');
+
+    if (!element) {
+      return;
+    }
+
     const id = Number(element.dataset.id);
 
     getPopupData(id, data);

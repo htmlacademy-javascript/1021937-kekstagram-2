@@ -1,9 +1,11 @@
 import { isEscKeyDown, POPUP_SERVICE_CLASSES } from './util';
 import { getCommentErrorMessage, getHashtagErrorMessage, validateCommentLength, validateHashtags } from './validation';
+import { resetFilter } from './picture-styling-filter.js';
+
+const { HIDDEN, BODY_INIT_POPUP } = POPUP_SERVICE_CLASSES;
 
 const body = document.body;
-
-export const uploadPictureForm = document.querySelector('.img-upload__form');
+const uploadPictureForm = document.querySelector('.img-upload__form');
 export const previewPicture = uploadPictureForm.querySelector('.img-upload__preview img');
 const uploadFileInput = uploadPictureForm.querySelector('.img-upload__input');
 const pictureEditorOverlay = uploadPictureForm.querySelector('.img-upload__overlay');
@@ -12,13 +14,27 @@ const pictureEditorCancelButton = pictureEditorOverlay.querySelector('.img-uploa
 const hashTagInput = uploadPictureForm.querySelector('.text__hashtags');
 const commentInput = uploadPictureForm.querySelector('.text__description');
 
-const {HIDDEN, BODY_INIT_POPUP} = POPUP_SERVICE_CLASSES;
+const pristine = new Pristine(uploadPictureForm, {
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--error',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'div',
+  errorTextClass: 'pristine-error'
+});
+
+uploadPictureForm.addEventListener('submit', (event) => {
+  if (!pristine.validate()) {
+    event.preventDefault();
+  }
+});
 
 export const closePictureEditor = () => {
   pictureEditorOverlay.classList.add(HIDDEN);
   body.classList.remove(BODY_INIT_POPUP);
   uploadFileInput.value = '';
 
+  pristine.reset();
+  resetFilter();
   removePictureEditorListeners();
 };
 
@@ -58,20 +74,6 @@ function removePictureEditorListeners() {
   pictureEditorCancelButton.removeEventListener('click', onCancelButtonClick);
   document.removeEventListener('keydown', onDocumentKeyDown);
 }
-
-const pristine = new Pristine(uploadPictureForm, {
-  classTo: 'img-upload__form',
-  errorClass: 'img-upload__field-wrapper--error',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextTag: 'div',
-  errorTextClass: 'data-error'
-});
-
-uploadPictureForm.addEventListener('submit', (event) => {
-  if (!pristine.validate()) {
-    event.preventDefault();
-  }
-});
 
 pristine.addValidator(hashTagInput, validateHashtags, getHashtagErrorMessage);
 pristine.addValidator(commentInput, validateCommentLength, getCommentErrorMessage);
