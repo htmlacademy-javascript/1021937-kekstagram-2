@@ -18,7 +18,6 @@ const pristine = new Pristine(uploadPictureForm, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextTag: 'div',
   errorTextClass: 'pristine-error'
 });
 
