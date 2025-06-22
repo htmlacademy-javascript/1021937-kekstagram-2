@@ -20,10 +20,7 @@ getData()
     renderPicture(photoObjects);
     initPopup(photoObjects);
   })
-  .catch((error) => {
-    console.error(error);
-    showErrorMessage();
-  });
+  .catch(showErrorMessage);
 
 initFormPopupUploadPicture();
 initImageScale();
