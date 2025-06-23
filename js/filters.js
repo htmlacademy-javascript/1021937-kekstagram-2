@@ -4,6 +4,14 @@ import { debounce } from './util.js';
 
 let currentData = [];
 
+const FILTERS = {
+  DEFAULT: 'filter-default',
+  RANDOM: 'filter-random',
+  DISCUSSED: 'filter-discussed'
+};
+
+const {DEFAULT, RANDOM, DISCUSSED} = FILTERS;
+
 const randomUniquePhotoCount = 10;
 
 const imgFiltersSection = document.querySelector('.img-filters');
@@ -27,13 +35,13 @@ const renderFilteredPhotos = (filterType) => {
   let filteredPhotos;
 
   switch (filterType) {
-    case 'filter-default':
+    case DEFAULT:
       filteredPhotos = currentData;
       break;
-    case 'filter-random':
+    case RANDOM:
       filteredPhotos = getRandomUniquePhotos(currentData, randomUniquePhotoCount);
       break;
-    case 'filter-discussed':
+    case DISCUSSED:
       filteredPhotos = sortDiscussed(currentData);
       break;
     default:

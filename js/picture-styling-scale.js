@@ -6,6 +6,8 @@ const SCALE_SETTINGS = {
   MAX: 100
 };
 
+const {STEP, MIN, MAX} = SCALE_SETTINGS;
+
 export const initImageScale = () => {
   const pictureEditorOverlay = document.querySelector('.img-upload__overlay');
   const uploadFileInput = document.querySelector('.img-upload__input');
@@ -15,12 +17,12 @@ export const initImageScale = () => {
   const scaleValueInput = pictureEditorOverlay.querySelector('.scale__control--value');
 
   function setScale(value) {
-    if (value < SCALE_SETTINGS.MIN) {
-      value = SCALE_SETTINGS.MIN;
+    if (value < MIN) {
+      value = MIN;
     }
 
-    if (value > SCALE_SETTINGS.MAX) {
-      value = SCALE_SETTINGS.MAX;
+    if (value > MAX) {
+      value = MAX;
     }
 
     scaleValueInput.value = `${value}%`;
@@ -29,12 +31,12 @@ export const initImageScale = () => {
 
   scaleSmallerButton.addEventListener('click', () => {
     const currentScale = parseInt(scaleValueInput.value, 10);
-    setScale(currentScale - SCALE_SETTINGS.STEP);
+    setScale(currentScale - STEP);
   });
 
   scaleBiggerButton.addEventListener('click', () => {
     const currentScale = parseInt(scaleValueInput.value, 10);
-    setScale(currentScale + SCALE_SETTINGS.STEP);
+    setScale(currentScale + STEP);
   });
 
   uploadFileInput.addEventListener('change', () => {
