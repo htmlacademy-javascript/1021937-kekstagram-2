@@ -55,7 +55,7 @@ const initSlider = () => {
     step: 0.1,
     connect: 'lower',
     format: {
-      to: (value) => Number(value).toFixed(2),
+      to: (value) => String(parseFloat(value)),
       from: (value) => parseFloat(value)
     }
   });
