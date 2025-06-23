@@ -1,9 +1,8 @@
-import { renderPicture } from './render-picture.js';
-import { initPopup } from './init-popup.js';
+import { getData } from './api.js';
+import { initFilters } from './filters.js';
 import { initFormPopupUploadPicture } from './form-popup-upload-picture.js';
 import { initImageScale } from './picture-styling-scale.js';
 import { initEffects } from './picture-styling-filter.js';
-import { getData } from './api.js';
 
 const showErrorMessage = () => {
   const template = document.querySelector('#data-error');
@@ -17,8 +16,7 @@ const showErrorMessage = () => {
 
 getData()
   .then((photoObjects) => {
-    renderPicture(photoObjects);
-    initPopup(photoObjects);
+    initFilters(photoObjects);
   })
   .catch(showErrorMessage);
 
