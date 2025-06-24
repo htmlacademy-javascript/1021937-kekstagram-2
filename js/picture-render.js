@@ -1,4 +1,4 @@
-export const renderPicture = (data) => {
+export const pictureRender = (data) => {
   const pictureSectionList = document.querySelector('.pictures');
   const template = document.querySelector('#picture').content.querySelector('.picture');
   const fragment = document.createDocumentFragment();
