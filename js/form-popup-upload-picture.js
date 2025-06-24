@@ -123,6 +123,14 @@ const onDocumentKeyDown = (event) => {
 
     if (document.activeElement === hashTagInput || document.activeElement === commentInput) {
       event.stopPropagation();
+
+      return;
+    }
+
+    const errorElement = document.body.querySelector('.error');
+    if (errorElement) {
+      errorElement.remove();
+
       return;
     }
 
