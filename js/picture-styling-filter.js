@@ -1,11 +1,11 @@
 import { previewPicture } from './form-popup-upload-picture';
 
+let currentEffect = 'none';
+
 const effectLevelInput = document.querySelector('.effect-level__value');
 const effectSliderContainer = document.querySelector('.img-upload__effect-level');
 const effectRadioButtons = document.querySelectorAll('.effects__radio');
 const effectSliderElement = effectSliderContainer.querySelector('.effect-level__slider');
-
-let currentEffect = 'none';
 
 const EFFECTS = {
   none: {
@@ -81,9 +81,13 @@ const changeEffect = (effect) => {
   }
 };
 
+const onEffectRadioChange = (event) => {
+  changeEffect(event.target.value);
+};
+
 const bindRadioButtons = () => {
   effectRadioButtons.forEach((radio) =>
-    radio.addEventListener('change', () => changeEffect(radio.value))
+    radio.addEventListener('change', onEffectRadioChange)
   );
 };
 

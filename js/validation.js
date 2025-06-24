@@ -6,6 +6,8 @@ const VALIDATION_RULES = {
   MAX_COMMENT_LENGTH: 140
 };
 
+const hashTagRule = /^#[a-zа-яё0-9]+$/i;
+
 export const ERROR_MESSAGES = {
   HASHTAGS: {
     TOO_MANY: 'Нельзя указать больше пяти хэштегов',
@@ -40,8 +42,6 @@ export const isValidHashtagFormat = (tag) => {
   if (!isValidStringLength(tag, VALIDATION_RULES.MAX_HASHTAG_LENGTH)) {
     return false;
   }
-
-  const hashTagRule = /^#[a-zа-яё0-9]+$/i;
 
   return hashTagRule.test(tag);
 };
@@ -95,7 +95,7 @@ export const getHashtagErrorMessage = (value) => {
       return ERROR_MESSAGES.HASHTAGS.TOO_LONG;
     }
 
-    if (!/^#[a-zа-яё0-9]+$/i.test(tag)) {
+    if (!hashTagRule.test(tag)) {
       return ERROR_MESSAGES.HASHTAGS.INVALID_CHARACTERS;
     }
   }
