@@ -1,4 +1,4 @@
-import { renderPicture } from './render-picture.js';
+import { pictureRender } from './picture-render.js';
 import { initPopup } from './init-popup.js';
 import { debounce } from './util.js';
 
@@ -48,7 +48,7 @@ const renderFilteredPhotos = (filterType) => {
       filteredPhotos = currentData;
   }
 
-  renderPicture(filteredPhotos);
+  pictureRender(filteredPhotos);
   initPopup(filteredPhotos);
 };
 

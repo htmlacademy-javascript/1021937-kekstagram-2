@@ -2,6 +2,7 @@ import { isEscKeyDown, POPUP_SERVICE_CLASSES } from './util.js';
 import { getCommentErrorMessage, getHashtagErrorMessage, validateCommentLength, validateHashtags } from './validation.js';
 import { resetFilter } from './picture-styling-filter.js';
 import { sendData } from './api.js';
+import { initPictureUpload } from './picture-upload.js';
 
 const { HIDDEN, BODY_INIT_POPUP } = POPUP_SERVICE_CLASSES;
 
@@ -19,7 +20,6 @@ const uploadFileInput = uploadPictureForm.querySelector('.img-upload__input');
 const pictureEditorOverlay = uploadPictureForm.querySelector('.img-upload__overlay');
 const pictureEditorCancelButton = pictureEditorOverlay.querySelector('.img-upload__cancel');
 const submitButton = uploadPictureForm.querySelector('.img-upload__submit');
-
 const hashTagInput = uploadPictureForm.querySelector('.text__hashtags');
 const commentInput = uploadPictureForm.querySelector('.text__description');
 
@@ -127,6 +127,13 @@ const onDocumentKeyDown = (event) => {
       return;
     }
 
+    const errorElement = document.body.querySelector('.error');
+    if (errorElement) {
+      errorElement.remove();
+
+      return;
+    }
+
     closePictureEditor();
   }
 };
@@ -137,6 +144,8 @@ const addPictureEditorListeners = () => {
 };
 
 export const initFormPopupUploadPicture = () => {
+  initPictureUpload();
+
   uploadFileInput.addEventListener('change', () => {
     pictureEditorOverlay.classList.remove(HIDDEN);
     body.classList.add(BODY_INIT_POPUP);
@@ -168,7 +177,6 @@ uploadPictureForm.addEventListener('submit', async (evt) => {
 
     showSuccessMessage();
     closePictureEditor();
-
   } catch (error) {
     showErrorMessage();
   } finally {
