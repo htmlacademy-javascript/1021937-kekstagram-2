@@ -1,8 +1,11 @@
 import { isEscKeyDown, POPUP_SERVICE_CLASSES } from './util.js';
 
+const COMMENT_RENDER_COUNT = 5;
+
+const {HIDDEN, BODY_INIT_POPUP} = POPUP_SERVICE_CLASSES;
+
 let currentComments = [];
 let shownCommentsCount = 0;
-const {HIDDEN, BODY_INIT_POPUP} = POPUP_SERVICE_CLASSES;
 
 const body = document.body;
 const bigPicture = document.querySelector('.big-picture');
@@ -18,8 +21,6 @@ const commentsLoaderButton = bigPicture.querySelector('.social__comments-loader'
 
 const commentsShownCountElement = commentsCount.querySelector('.social__comment-shown-count');
 const commentsTotalCountElement = commentsCount.querySelector('.social__comment-total-count');
-
-const COMMENT_RENDER_COUNT = 5;
 
 export const closePopup = () => {
   bigPicture.classList.add(HIDDEN);
@@ -103,7 +104,7 @@ const getPhotoComments = (data) => {
 };
 
 const getPopupData = (id, data) => {
-  const currentPicture = data.find((element) => Number(element.id) === id);
+  const currentPicture = data.find((element) => element.id === Number(id));
 
   if (!currentPicture) {
     return;
@@ -117,19 +118,14 @@ const getPopupData = (id, data) => {
 };
 
 export const initPopup = (data) => {
-  const pictures = document.querySelector('.pictures');
+  const pictures = document.querySelectorAll('.picture');
 
-  pictures.addEventListener('click', (event) => {
-    const element = event.target.closest('.picture');
-
-    if (!element) {
-      return;
-    }
-
-    const id = Number(element.dataset.id);
-
-    getPopupData(id, data);
-  });
+  pictures.forEach((element) =>
+    element.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      getPopupData(element.dataset.id, data);
+    })
+  );
 };
 
 function removePopupListenersGarbage() {

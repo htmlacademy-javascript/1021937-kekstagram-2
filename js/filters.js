@@ -2,17 +2,17 @@ import { pictureRender } from './picture-render.js';
 import { initPopup } from './init-popup.js';
 import { debounce } from './util.js';
 
-let currentData = [];
-
 const FILTERS = {
   DEFAULT: 'filter-default',
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed'
 };
 
+const RANDOM_UNIQUE_PHOTO_COUNT = 10;
+
 const {DEFAULT, RANDOM, DISCUSSED} = FILTERS;
 
-const randomUniquePhotoCount = 10;
+let currentData = [];
 
 const imgFiltersSection = document.querySelector('.img-filters');
 const filterButtons = imgFiltersSection.querySelectorAll('.img-filters__button');
@@ -39,7 +39,7 @@ const renderFilteredPhotos = (filterType) => {
       filteredPhotos = currentData;
       break;
     case RANDOM:
-      filteredPhotos = getRandomUniquePhotos(currentData, randomUniquePhotoCount);
+      filteredPhotos = getRandomUniquePhotos(currentData, RANDOM_UNIQUE_PHOTO_COUNT);
       break;
     case DISCUSSED:
       filteredPhotos = sortDiscussed(currentData);

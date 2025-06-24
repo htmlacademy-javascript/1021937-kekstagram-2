@@ -17,8 +17,8 @@ export const initPictureUpload = () => {
 
     if (matches) {
       picture.src = URL.createObjectURL(file);
-      previews.forEach((item) => {
-        item.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
+      previews.forEach((element) => {
+        element.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
       });
     }
   });
