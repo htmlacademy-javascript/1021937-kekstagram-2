@@ -1,4 +1,4 @@
-import { isEscKeyDown, POPUP_SERVICE_CLASSES } from './util';
+import { isEscKeyDown, POPUP_SERVICE_CLASSES } from './util.js';
 
 let currentComments = [];
 let shownCommentsCount = 0;
@@ -103,7 +103,11 @@ const getPhotoComments = (data) => {
 };
 
 const getPopupData = (id, data) => {
-  const currentPicture = data.find((element) => element.id === id);
+  const currentPicture = data.find((element) => Number(element.id) === id);
+
+  if (!currentPicture) {
+    return;
+  }
 
   getPhotoComments(currentPicture);
   initOpenPopupListeners();
